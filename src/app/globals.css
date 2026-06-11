@@ -1,0 +1,197 @@
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-be-viet: 'Be Vietnam Pro';
+  --font-playfair: 'Playfair Display';
+
+  /* Màu sắc sao */
+  --color-chinh:  #1c1410;   /* chính diệu: mực đậm */
+  --color-sat:    #c0392b;   /* sát tinh: đỏ cinnabar */
+  --color-cat:    #27744a;   /* cát tinh: xanh ngọc bích */
+  --color-loc:    #b8860b;   /* Hóa Lộc / Lộc Tồn: vàng */
+  --color-ky:     #1a4e8c;   /* Hóa Kỵ: xanh cobalt */
+  --color-quyen:  #8B4513;   /* Hóa Quyền: nâu đất */
+  --color-khoa:   #2e7d6e;   /* Hóa Khoa: xanh lục ngả ngọc */
+  --color-phu:    #5a4a3a;   /* phụ tinh: nâu muted */
+}
+
+@layer base {
+  body {
+    background-color: #fefaf0;
+    color: #1c1410;
+    font-family: var(--font-be-viet), 'Be Vietnam Pro', system-ui, sans-serif;
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+  }
+  * { box-sizing: border-box; }
+}
+
+/* ── Lá số grid ───────────────────────────────────── */
+.laso-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  border: 2px solid #8B4513;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #1c1410;
+  gap: 1px;
+  aspect-ratio: 4 / 4;
+}
+
+.cung-cell {
+  background: #fefaf0;
+  position: relative;
+  padding: 6px 7px 4px;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.center-panel {
+  grid-column: 2 / 4;
+  grid-row: 2 / 4;
+  background: #fffdf5;
+  border: none;
+}
+
+/* ── Tên sao ─────────────────────────────────────── */
+.sao-chinh   { color: var(--color-chinh); font-weight: 700; font-size: 0.8rem; }
+.sao-sat     { color: var(--color-sat);   font-weight: 500; font-size: 0.72rem; }
+.sao-cat     { color: var(--color-cat);   font-weight: 500; font-size: 0.72rem; }
+.sao-loc     { color: var(--color-loc);   font-weight: 600; font-size: 0.72rem; }
+.sao-ky      { color: var(--color-ky);    font-weight: 600; font-size: 0.72rem; }
+.sao-quyen   { color: var(--color-quyen); font-weight: 500; font-size: 0.72rem; }
+.sao-khoa    { color: var(--color-khoa);  font-weight: 500; font-size: 0.72rem; }
+.sao-phu     { color: var(--color-phu);   font-weight: 400; font-size: 0.68rem; }
+
+.sao-prefix  { font-size: 0.6rem; opacity: 0.7; }
+
+/* ── Nhãn cung ───────────────────────────────────── */
+.cung-label  {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #7a6a58;
+  text-transform: uppercase;
+}
+.cung-chi    {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #1c1410;
+}
+
+/* ── Mức độ badge ────────────────────────────────── */
+.mdo-M  { color: #c0392b; }
+.mdo-V  { color: #27744a; }
+.mdo-D  { color: #1a4e8c; }
+.mdo-B  { color: #7a6a58; }
+.mdo-H  { color: #999; }
+
+/* ── Đại hạn số ──────────────────────────────────── */
+.dai-han-num {
+  font-family: var(--font-playfair);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #8B4513;
+  line-height: 1;
+}
+
+/* ── Tràng sinh ──────────────────────────────────── */
+.truong-sinh-label {
+  font-size: 0.6rem;
+  color: #9a8070;
+  font-style: italic;
+}
+
+/* ── Tuần / Triệt dải ────────────────────────────── */
+.tuan-bar  { background: #2c1810; color: #f5deb3; }
+.triet-bar { background: #1a3a1a; color: #c8e6c9; }
+.tuan-triet-bar {
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 1px 4px;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+/* ── Tiêu đề THÂN ────────────────────────────────── */
+.than-badge {
+  background: #c0392b;
+  color: white;
+  font-size: 0.55rem;
+  font-weight: 700;
+  padding: 1px 4px;
+  border-radius: 3px;
+  letter-spacing: 0.05em;
+}
+
+/* ── Form input ──────────────────────────────────── */
+.form-input {
+  background: white;
+  border: 1.5px solid #d4c4a8;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 0.875rem;
+  color: #1c1410;
+  width: 100%;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  font-family: var(--font-be-viet);
+}
+.form-input:focus {
+  outline: none;
+  border-color: #8B4513;
+  box-shadow: 0 0 0 3px rgba(139,69,19,0.12);
+}
+.form-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #5a4a3a;
+  margin-bottom: 4px;
+  letter-spacing: 0.03em;
+}
+.btn-primary {
+  background: linear-gradient(135deg, #8B4513 0%, #c0392b 100%);
+  color: white;
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 12px 32px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: opacity 0.15s, transform 0.1s;
+  font-family: var(--font-be-viet);
+}
+.btn-primary:hover  { opacity: 0.92; transform: translateY(-1px); }
+.btn-primary:active { transform: translateY(0); }
+
+/* ── Decorative frame ────────────────────────────── */
+.ornament-divider {
+  display: flex; align-items: center; gap: 8px; color: #8B4513; opacity: 0.6;
+}
+.ornament-divider::before, .ornament-divider::after {
+  content: ''; flex: 1; height: 1px; background: currentColor;
+}
+
+/* ── Print ───────────────────────────────────────── */
+@media print {
+  body { background: white; font-size: 11px; }
+  .no-print { display: none !important; }
+  .laso-grid { border: 1.5px solid #333; }
+  .cung-cell { padding: 4px 5px; }
+}
+
+/* ── Responsive ──────────────────────────────────── */
+@media (max-width: 768px) {
+  .laso-grid { font-size: 10px; }
+  .sao-chinh { font-size: 0.7rem; }
+  .sao-sat, .sao-cat, .sao-phu { font-size: 0.6rem; }
+}
