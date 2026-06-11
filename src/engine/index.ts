@@ -187,6 +187,7 @@ export function lapLaSo(
   const phongCaoChi  = Phu.anPhongCao(gioIdx);
   const thienTaiChi  = Phu.anThienTai(cungMenh, chiNamVal);
   const thienThoChi  = Phu.anThienTho(cungThan, chiNamVal);
+  const khoiPhuChi   = Phu.anThienQuan(canNamVal);
   const phaToaiChi   = Phu.anPhaToai(chiNamVal);
   const hoaCaiChi    = Phu.anHoaCai(chiNamVal);
   const kiepSatChi   = Phu.anKiepSat(chiNamVal);
@@ -356,4 +357,4 @@ export function lapLaSo(
   };
 }
 
-export type { CungData, SaoTrongCung, DaiHan, TieuHan, CungInfo, CucInfo, MucDo, TuHoaType };
+export type { DaiHan, TieuHan, CungInfo, CucInfo, MucDo, TuHoaType };
