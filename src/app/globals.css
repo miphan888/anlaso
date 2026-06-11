@@ -1,197 +1,330 @@
-@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,600;0,700;1,400&family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ── Design tokens ─────────────────────────────────── */
 :root {
-  --font-be-viet: 'Be Vietnam Pro';
-  --font-playfair: 'Playfair Display';
+  --font-body: 'Be Vietnam Pro', system-ui, sans-serif;
+  --font-display: 'Playfair Display', 'Noto Serif', Georgia, serif;
+  --font-serif: 'Noto Serif', Georgia, serif;
 
-  /* Màu sắc sao */
-  --color-chinh:  #1c1410;   /* chính diệu: mực đậm */
-  --color-sat:    #c0392b;   /* sát tinh: đỏ cinnabar */
-  --color-cat:    #27744a;   /* cát tinh: xanh ngọc bích */
-  --color-loc:    #b8860b;   /* Hóa Lộc / Lộc Tồn: vàng */
-  --color-ky:     #1a4e8c;   /* Hóa Kỵ: xanh cobalt */
-  --color-quyen:  #8B4513;   /* Hóa Quyền: nâu đất */
-  --color-khoa:   #2e7d6e;   /* Hóa Khoa: xanh lục ngả ngọc */
-  --color-phu:    #5a4a3a;   /* phụ tinh: nâu muted */
+  /* Palette: giấy dó cổ + mực tàu + son vermilion */
+  --ink:        #1a120a;
+  --ink-light:  #3d2b1f;
+  --parchment:  #f9f3e3;
+  --parchment-deep: #f0e6cc;
+  --parchment-border: #d8c9a8;
+  --vermilion:  #b5351a;
+  --vermilion-light: #d04020;
+  --gold:       #a07010;
+  --gold-light: #c89830;
+  --jade:       #1e6640;
+  --cobalt:     #163d7a;
+  --sienna:     #7a3c18;
+  --muted:      #6a5a48;
+  --muted-light:#9a8a78;
+
+  /* Màu sao */
+  --color-chinh:  var(--ink);
+  --color-sat:    var(--vermilion);
+  --color-cat:    var(--jade);
+  --color-loc:    var(--gold);
+  --color-ky:     var(--cobalt);
+  --color-quyen:  var(--sienna);
+  --color-khoa:   #1e6a5a;
+  --color-phu:    var(--muted);
+
+  /* Grid */
+  --cell-bg:      #fdf9ef;
+  --cell-bg-alt:  #faf5e8;
+  --grid-line:    #c8b898;
+  --grid-border:  #8a5c2a;
 }
 
+/* ── Base ──────────────────────────────────────────── */
 @layer base {
+  html { scroll-behavior: smooth; }
   body {
-    background-color: #fefaf0;
-    color: #1c1410;
-    font-family: var(--font-be-viet), 'Be Vietnam Pro', system-ui, sans-serif;
+    background-color: var(--parchment);
+    color: var(--ink);
+    font-family: var(--font-body);
     font-size: 14px;
     -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
   }
   * { box-sizing: border-box; }
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button { opacity: 0.5; }
 }
 
-/* ── Lá số grid ───────────────────────────────────── */
+/* ── Background texture ────────────────────────────── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 39px,
+      rgba(180,150,100,0.04) 40px
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Layout wrapper ────────────────────────────────── */
+#__next, main { position: relative; z-index: 1; }
+
+/* ══════════════════════════════════════════════════════
+   LÁ SỐ GRID
+══════════════════════════════════════════════════════ */
 .laso-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(4, 1fr);
-  border: 2px solid #8B4513;
-  border-radius: 6px;
+  border: 2px solid var(--grid-border);
+  border-radius: 4px;
   overflow: hidden;
-  background: #1c1410;
+  background: var(--grid-line);
   gap: 1px;
-  aspect-ratio: 4 / 4;
+  box-shadow:
+    0 0 0 4px var(--parchment),
+    0 0 0 6px var(--parchment-border),
+    0 4px 24px rgba(60,30,10,0.15);
 }
 
 .cung-cell {
-  background: #fefaf0;
+  background: var(--cell-bg);
   position: relative;
-  padding: 6px 7px 4px;
-  min-height: 0;
+  padding: 7px 8px 5px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  gap: 1px;
+  transition: background 0.15s;
+}
+
+.cung-cell:hover {
+  background: #fdf7e5;
+  z-index: 2;
+}
+
+/* Corner mark trang trí góc cung */
+.cung-cell::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 0; height: 0;
+  border-style: solid;
+  border-width: 0 14px 14px 0;
+  border-color: transparent var(--parchment-border) transparent transparent;
+  opacity: 0.5;
 }
 
 .center-panel {
-  grid-column: 2 / 4;
-  grid-row: 2 / 4;
-  background: #fffdf5;
-  border: none;
+  background: linear-gradient(145deg, #fffdf5 0%, #fdf8e8 100%);
 }
 
-/* ── Tên sao ─────────────────────────────────────── */
-.sao-chinh   { color: var(--color-chinh); font-weight: 700; font-size: 0.8rem; }
-.sao-sat     { color: var(--color-sat);   font-weight: 500; font-size: 0.72rem; }
-.sao-cat     { color: var(--color-cat);   font-weight: 500; font-size: 0.72rem; }
-.sao-loc     { color: var(--color-loc);   font-weight: 600; font-size: 0.72rem; }
-.sao-ky      { color: var(--color-ky);    font-weight: 600; font-size: 0.72rem; }
-.sao-quyen   { color: var(--color-quyen); font-weight: 500; font-size: 0.72rem; }
-.sao-khoa    { color: var(--color-khoa);  font-weight: 500; font-size: 0.72rem; }
-.sao-phu     { color: var(--color-phu);   font-weight: 400; font-size: 0.68rem; }
+/* ══════════════════════════════════════════════════════
+   TÊN SAO
+══════════════════════════════════════════════════════ */
+.sao-chinh {
+  color: var(--color-chinh);
+  font-weight: 700;
+  font-size: 0.82rem;
+  font-family: var(--font-serif);
+  letter-spacing: 0.01em;
+}
+.sao-sat    { color: var(--color-sat);   font-weight: 500; font-size: 0.71rem; }
+.sao-cat    { color: var(--color-cat);   font-weight: 500; font-size: 0.71rem; }
+.sao-loc    { color: var(--color-loc);   font-weight: 700; font-size: 0.71rem; }
+.sao-ky     { color: var(--color-ky);    font-weight: 700; font-size: 0.71rem; }
+.sao-quyen  { color: var(--color-quyen); font-weight: 600; font-size: 0.71rem; }
+.sao-khoa   { color: var(--color-khoa);  font-weight: 500; font-size: 0.71rem; }
+.sao-phu    { color: var(--color-phu);   font-weight: 400; font-size: 0.67rem; }
+.sao-prefix { font-size: 0.59rem; opacity: 0.75; }
 
-.sao-prefix  { font-size: 0.6rem; opacity: 0.7; }
+/* ── Mức độ ────────────────────────────────────────── */
+.mdo-M { color: var(--vermilion); }
+.mdo-V { color: var(--jade); }
+.mdo-D { color: var(--cobalt); }
+.mdo-B { color: var(--muted-light); }
+.mdo-H { color: #bbb; }
 
-/* ── Nhãn cung ───────────────────────────────────── */
-.cung-label  {
-  font-size: 0.65rem;
+/* ══════════════════════════════════════════════════════
+   NHÃN CUNG
+══════════════════════════════════════════════════════ */
+.cung-label {
+  font-size: 0.6rem;
   font-weight: 600;
-  letter-spacing: 0.04em;
-  color: #7a6a58;
+  letter-spacing: 0.08em;
+  color: var(--muted);
   text-transform: uppercase;
+  line-height: 1.2;
 }
-.cung-chi    {
-  font-size: 0.7rem;
-  font-weight: 700;
-  color: #1c1410;
-}
-
-/* ── Mức độ badge ────────────────────────────────── */
-.mdo-M  { color: #c0392b; }
-.mdo-V  { color: #27744a; }
-.mdo-D  { color: #1a4e8c; }
-.mdo-B  { color: #7a6a58; }
-.mdo-H  { color: #999; }
-
-/* ── Đại hạn số ──────────────────────────────────── */
-.dai-han-num {
-  font-family: var(--font-playfair);
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #8B4513;
+.cung-chi {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--ink);
+  font-family: var(--font-serif);
   line-height: 1;
 }
 
-/* ── Tràng sinh ──────────────────────────────────── */
-.truong-sinh-label {
-  font-size: 0.6rem;
-  color: #9a8070;
-  font-style: italic;
+/* ── Đại hạn số ────────────────────────────────────── */
+.dai-han-num {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--sienna);
+  line-height: 1;
 }
 
-/* ── Tuần / Triệt dải ────────────────────────────── */
+/* ── Tràng sinh ────────────────────────────────────── */
+.truong-sinh-label {
+  font-size: 0.58rem;
+  color: var(--muted-light);
+  font-style: italic;
+  font-family: var(--font-serif);
+}
+
+/* ── Tuần / Triệt ──────────────────────────────────── */
 .tuan-bar  { background: #2c1810; color: #f5deb3; }
-.triet-bar { background: #1a3a1a; color: #c8e6c9; }
+.triet-bar { background: #1a3010; color: #c8e6c9; }
 .tuan-triet-bar {
-  font-size: 0.55rem;
+  font-size: 0.53rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
-  padding: 1px 4px;
+  letter-spacing: 0.08em;
+  padding: 1px 5px;
   border-radius: 2px;
   display: inline-block;
+  font-family: var(--font-body);
 }
 
-/* ── Tiêu đề THÂN ────────────────────────────────── */
+/* ── Badge THÂN ────────────────────────────────────── */
 .than-badge {
-  background: #c0392b;
+  background: var(--vermilion);
   color: white;
-  font-size: 0.55rem;
+  font-size: 0.52rem;
   font-weight: 700;
   padding: 1px 4px;
-  border-radius: 3px;
-  letter-spacing: 0.05em;
+  border-radius: 2px;
+  letter-spacing: 0.06em;
 }
 
-/* ── Form input ──────────────────────────────────── */
+/* ══════════════════════════════════════════════════════
+   FORM
+══════════════════════════════════════════════════════ */
+.form-label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 5px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
 .form-input {
   background: white;
-  border: 1.5px solid #d4c4a8;
-  border-radius: 6px;
-  padding: 8px 12px;
+  border: 1.5px solid var(--parchment-border);
+  border-radius: 5px;
+  padding: 9px 12px;
   font-size: 0.875rem;
-  color: #1c1410;
+  color: var(--ink);
   width: 100%;
   transition: border-color 0.15s, box-shadow 0.15s;
-  font-family: var(--font-be-viet);
+  font-family: var(--font-body);
 }
 .form-input:focus {
   outline: none;
-  border-color: #8B4513;
-  box-shadow: 0 0 0 3px rgba(139,69,19,0.12);
+  border-color: var(--sienna);
+  box-shadow: 0 0 0 3px rgba(122,60,24,0.1);
 }
-.form-label {
-  display: block;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #5a4a3a;
-  margin-bottom: 4px;
-  letter-spacing: 0.03em;
-}
+.form-input::placeholder { color: #bbb; }
+
 .btn-primary {
-  background: linear-gradient(135deg, #8B4513 0%, #c0392b 100%);
-  color: white;
+  background: linear-gradient(160deg, #7a3c18 0%, #b5351a 55%, #9a2a10 100%);
+  color: #fdf9ef;
   font-weight: 700;
   font-size: 0.9rem;
-  padding: 12px 32px;
-  border-radius: 8px;
-  border: none;
+  padding: 13px 32px;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.1);
   cursor: pointer;
-  letter-spacing: 0.04em;
-  transition: opacity 0.15s, transform 0.1s;
-  font-family: var(--font-be-viet);
+  letter-spacing: 0.06em;
+  transition: opacity 0.15s, transform 0.1s, box-shadow 0.15s;
+  font-family: var(--font-body);
+  box-shadow: 0 2px 8px rgba(100,30,10,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
+  position: relative;
+  overflow: hidden;
 }
-.btn-primary:hover  { opacity: 0.92; transform: translateY(-1px); }
-.btn-primary:active { transform: translateY(0); }
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, transparent 50%);
+  pointer-events: none;
+}
+.btn-primary:hover  { opacity: 0.93; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(100,30,10,0.35); }
+.btn-primary:active { transform: translateY(0); box-shadow: 0 1px 4px rgba(100,30,10,0.2); }
+.btn-primary:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
 
-/* ── Decorative frame ────────────────────────────── */
+/* ── Ornament divider ──────────────────────────────── */
 .ornament-divider {
-  display: flex; align-items: center; gap: 8px; color: #8B4513; opacity: 0.6;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--sienna);
+  opacity: 0.55;
 }
-.ornament-divider::before, .ornament-divider::after {
-  content: ''; flex: 1; height: 1px; background: currentColor;
+.ornament-divider::before,
+.ornament-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: currentColor;
 }
 
-/* ── Print ───────────────────────────────────────── */
+/* ── Card ──────────────────────────────────────────── */
+.card {
+  background: white;
+  border: 1px solid var(--parchment-border);
+  border-radius: 8px;
+  box-shadow: 0 1px 6px rgba(60,30,10,0.06);
+}
+
+/* ── Section title ─────────────────────────────────── */
+.section-eyebrow {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sienna);
+  opacity: 0.7;
+}
+
+/* ══════════════════════════════════════════════════════
+   PRINT
+══════════════════════════════════════════════════════ */
 @media print {
   body { background: white; font-size: 11px; }
+  body::before { display: none; }
   .no-print { display: none !important; }
-  .laso-grid { border: 1.5px solid #333; }
-  .cung-cell { padding: 4px 5px; }
+  .laso-grid { border: 1.5px solid #555; box-shadow: none; }
+  .cung-cell { padding: 3px 4px; }
+  .cung-cell::after { display: none; }
 }
 
-/* ── Responsive ──────────────────────────────────── */
+/* ══════════════════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════════════════ */
 @media (max-width: 768px) {
   .laso-grid { font-size: 10px; }
-  .sao-chinh { font-size: 0.7rem; }
-  .sao-sat, .sao-cat, .sao-phu { font-size: 0.6rem; }
+  .sao-chinh { font-size: 0.72rem; }
+  .sao-sat, .sao-cat, .sao-phu { font-size: 0.62rem; }
+  .cung-chi { font-size: 0.72rem; }
+  .dai-han-num { font-size: 0.95rem; }
 }

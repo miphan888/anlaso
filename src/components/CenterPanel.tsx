@@ -19,140 +19,148 @@ export default function CenterPanel({ result }: CenterPanelProps) {
   } = result
 
   const huyenKhiColor =
-    huyenKhi > 3  ? '#27744a' :
-    huyenKhi > 0  ? '#b8860b' :
-    huyenKhi > -3 ? '#8B4513' : '#c0392b'
+    huyenKhi > 3  ? 'var(--jade)' :
+    huyenKhi > 0  ? 'var(--gold)' :
+    huyenKhi > -3 ? 'var(--sienna)' : 'var(--vermilion)'
 
   const menhCucColor =
-    menhCucQuan.includes('sinh') ? '#27744a' :
-    menhCucQuan.includes('khắc') ? '#c0392b' : '#5a4a3a'
+    menhCucQuan.includes('sinh') ? 'var(--jade)' :
+    menhCucQuan.includes('khắc') ? 'var(--vermilion)' : 'var(--muted)'
 
   return (
-    <div className="center-panel flex flex-col justify-between p-3 h-full">
-      {/* ── Tiêu đề ── */}
-      <div className="text-center mb-2">
-        <div className="text-[0.55rem] font-semibold tracking-[0.12em] text-[#8B4513] uppercase opacity-70 mb-1">
-          Nhóm Nghiên Cứu Tử Vi Cổ Học
+    <div
+      className="flex flex-col justify-between p-3 h-full"
+      style={{ fontFamily: 'var(--font-body)' }}
+    >
+      {/* Tiêu đề */}
+      <div className="text-center mb-1.5">
+        <div
+          className="text-[0.5rem] font-bold tracking-[0.14em] uppercase mb-1"
+          style={{ color: 'var(--sienna)', opacity: 0.6 }}
+        >
+          Tử Vi Đẩu Số
         </div>
         <div
-          className="font-display text-[1rem] font-bold tracking-wide text-[#1c1410]"
-          style={{ fontFamily: 'Playfair Display, Georgia, serif' }}
+          className="font-bold tracking-wide"
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontSize: '1.05rem',
+            color: 'var(--ink)',
+          }}
         >
-          Lá Số Tử Vi
+          Lá Số
         </div>
-        <div className="ornament-divider mt-1 text-[0.6rem]">✦</div>
+        <div
+          className="font-bold text-[0.9rem] mt-0.5"
+          style={{ color: 'var(--vermilion)', fontFamily: 'var(--font-serif)' }}
+        >
+          {hoTen}
+        </div>
+        <div className="mt-1.5 h-px mx-4" style={{ background: 'var(--parchment-border)' }} />
       </div>
 
-      {/* ── Thông tin cá nhân ── */}
-      <div className="space-y-[3px] text-[0.72rem]">
-        <Row label="Họ tên" value={hoTen} valueClass="font-bold text-[#c0392b]" />
-        <Row
-          label="Năm sinh"
-          value={`${namSinh}`}
-          extra={<span className="text-[#8B4513] font-semibold ml-1">{amLich.tenNam}</span>}
-        />
-        <Row
-          label="Tháng sinh"
-          value={`${thangSinh} (${amLich.thang})`}
-          extra={<span className="text-[#5a4a3a] ml-1">{amLich.tenThang}</span>}
-        />
-        <Row
-          label="Ngày sinh"
-          value={`${ngaySinh} (${amLich.ngay})`}
-          extra={<span className="text-[#5a4a3a] ml-1">{amLich.tenNgay}</span>}
-        />
-        <Row
-          label="Giờ sinh"
-          value={`${gioSinh} giờ ${phutSinh.toString().padStart(2,'0')} phút`}
-          extra={<span className="text-[#5a4a3a] ml-1">{amLich.chiNam && getGioName(gioSinh, phutSinh)}</span>}
-        />
+      {/* Thông tin cá nhân */}
+      <div className="space-y-[3px] text-[0.7rem]">
+        <Row label="Năm sinh"   value={`${namSinh}`}
+          extra={<Tag>{amLich.tenNam}</Tag>} />
+        <Row label="Tháng"      value={`DL ${thangSinh} · AL ${amLich.thang}`}
+          extra={<span style={{ color: 'var(--muted)' }}> {amLich.tenThang}</span>} />
+        <Row label="Ngày"       value={`DL ${ngaySinh} · AL ${amLich.ngay}`}
+          extra={<span style={{ color: 'var(--muted)' }}> {amLich.tenNgay}</span>} />
+        <Row label="Giờ sinh"
+          value={`${gioSinh}:${phutSinh.toString().padStart(2,'0')}`}
+          extra={<span style={{ color: 'var(--muted)' }}> {getGioName(gioSinh, phutSinh)}</span>} />
+        <Row label="Giới tính"  value={`${amDuong} · ${gioiTinh}`} bold />
       </div>
 
-      <div className="border-t border-[#d4c4a8] my-2" />
+      <Divider />
 
-      {/* ── Năm hạn ── */}
-      <div className="space-y-[3px] text-[0.72rem]">
-        <Row
-          label="Năm hạn"
-          value={`${namXem}`}
-          extra={<span className="text-[#8B4513] font-semibold ml-1">{canNamHan} {chiNamHan}</span>}
-        />
-        <Row label="Âm dương" value={`${amDuong} ${gioiTinh}`} valueClass="font-semibold" />
-        <Row label="Mệnh" value={menh} valueClass="font-bold text-[#c0392b]" />
-        <Row label="Cục" value={cuc.ten} valueClass="font-semibold text-[#8B4513]" />
-        <Row label="Sao chủ cục" value={saosChuCuc} valueClass="text-[#1a4e8c]" />
-        <Row label="Mệnh chủ" value={menhChu} valueClass="text-[#27744a] font-semibold" />
-        <Row label="Thân chủ" value={thanChu} valueClass="text-[#27744a] font-semibold" />
+      {/* Mệnh Cục */}
+      <div className="space-y-[3px] text-[0.7rem]">
+        <Row label="Mệnh"       value={menh}         valueStyle={{ color: 'var(--vermilion)', fontWeight: 700 }} />
+        <Row label="Cục"        value={cuc.ten}      valueStyle={{ color: 'var(--sienna)', fontWeight: 600 }} />
+        <Row label="Sao chủ cục" value={saosChuCuc}  valueStyle={{ color: 'var(--cobalt)' }} />
+        <Row label="Mệnh chủ"   value={menhChu}      valueStyle={{ color: 'var(--jade)', fontWeight: 600 }} />
+        <Row label="Thân chủ"   value={thanChu}      valueStyle={{ color: 'var(--jade)', fontWeight: 600 }} />
       </div>
 
-      <div className="border-t border-[#d4c4a8] my-2" />
+      <Divider />
 
-      {/* ── Cung Thân + Đại/Tiểu hạn ── */}
-      <div className="space-y-[3px] text-[0.72rem]">
-        <Row label="Lai nhân cung" value={cungThanTen || ''} />
+      {/* Năm hạn */}
+      <div className="space-y-[3px] text-[0.7rem]">
+        <Row label="Năm xem"    value={`${namXem}`}
+          extra={<Tag>{canNamHan} {chiNamHan}</Tag>} />
         {daiHanHienTai && (
-          <Row
-            label="Nguyên thần"
+          <Row label="Đại hạn"
             value={`${daiHanHienTai.chiCung}`}
-            extra={<span className="text-[#8B4513] ml-1 font-semibold">{daiHanHienTai.tuoi}–{daiHanHienTai.den} tuổi</span>}
-          />
+            extra={<span style={{ color: 'var(--sienna)', fontWeight: 600 }}> {daiHanHienTai.tuoi}–{daiHanHienTai.den} tuổi</span>} />
         )}
-        <Row label="Huyền khí" value={huyenKhi.toString()} valueClass="font-bold" valueStyle={{ color: huyenKhiColor }} />
+        <Row label="Tiểu hạn"   value={`cung ${tieuHan.chiCung}`} />
+        <Row label="Huyền khí"  value={huyenKhi.toString()}
+          valueStyle={{ color: huyenKhiColor, fontWeight: 700 }} />
       </div>
 
-      <div className="border-t border-[#d4c4a8] my-2" />
+      <Divider />
 
-      {/* ── Luận đoán tổng ── */}
-      <div className="space-y-[2px]">
-        <div
-          className="text-[0.72rem] font-bold text-center"
-          style={{ color: '#c0392b' }}
-        >
+      {/* Kết luận */}
+      <div className="text-center space-y-[2px]">
+        <div className="text-[0.7rem] font-bold" style={{ color: 'var(--vermilion)' }}>
           {amDuongQuan}
         </div>
-        <div
-          className="text-[0.72rem] font-bold text-center"
-          style={{ color: menhCucColor }}
-        >
+        <div className="text-[0.7rem] font-semibold" style={{ color: menhCucColor }}>
           {menhCucQuan}
         </div>
         {cungThan !== cungMenh && (
-          <div className="text-[0.72rem] text-center text-[#1a4e8c] font-semibold">
+          <div className="text-[0.68rem]" style={{ color: 'var(--cobalt)', fontWeight: 600 }}>
             Thân cư {cungThanTen}
           </div>
         )}
-      </div>
-
-      {/* ── Tuổi hiện tại ── */}
-      <div className="text-center mt-2">
-        <span className="text-[0.62rem] text-[#9a8070]">
-          {tuoi} tuổi · Tiểu hạn cung {tieuHan.chiCung}
-        </span>
+        <div className="text-[0.62rem] mt-1" style={{ color: 'var(--muted-light)' }}>
+          {tuoi} tuổi
+        </div>
       </div>
     </div>
   )
 }
 
-// ── Sub-components ────────────────────────────────────────────
+/* ── Sub-components ─────────────────────────────────────── */
+
+function Divider() {
+  return <div className="h-px my-1.5" style={{ background: 'var(--parchment-border)' }} />
+}
+
+function Tag({ children }: { children: React.ReactNode }) {
+  return (
+    <span
+      className="ml-1 px-1.5 py-0.5 rounded text-[0.6rem] font-semibold"
+      style={{ background: 'var(--parchment-deep)', color: 'var(--sienna)', border: '1px solid var(--parchment-border)' }}
+    >
+      {children}
+    </span>
+  )
+}
+
 interface RowProps {
   label: string
   value: string
   extra?: React.ReactNode
-  valueClass?: string
+  bold?: boolean
   valueStyle?: React.CSSProperties
 }
-function Row({ label, value, extra, valueClass, valueStyle }: RowProps) {
+function Row({ label, value, extra, bold, valueStyle }: RowProps) {
   return (
     <div className="flex items-baseline justify-between gap-1">
-      <span className="text-[#7a6a58] flex-shrink-0 text-[0.68rem]">{label}:</span>
-      <span className={`text-right leading-snug ${valueClass ?? 'text-[#1c1410]'}`} style={valueStyle}>
+      <span className="flex-shrink-0 text-[0.65rem]" style={{ color: 'var(--muted-light)' }}>{label}</span>
+      <span
+        className="text-right leading-snug"
+        style={{ color: 'var(--ink-light)', fontWeight: bold ? 600 : 400, ...valueStyle }}
+      >
         {value}{extra}
       </span>
     </div>
   )
 }
 
-// ── Tên giờ ───────────────────────────────────────────────────
 function getGioName(gio: number, phut: number): string {
   const names = ['Tý','Sửu','Dần','Mão','Thìn','Tỵ','Ngọ','Mùi','Thân','Dậu','Tuất','Hợi']
   const totalMin = gio * 60 + phut

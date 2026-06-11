@@ -25,12 +25,11 @@ export default function HomePage() {
         data.namXem,
       )
       setResult(r)
-      // Scroll to chart on mobile
       setTimeout(() => {
         document.getElementById('laso-output')?.scrollIntoView({ behavior: 'smooth' })
       }, 100)
-    } catch (e: any) {
-      setError(e?.message ?? 'Có lỗi xảy ra. Vui lòng kiểm tra thông tin nhập.')
+    } catch (e: unknown) {
+      setError((e as Error)?.message ?? 'Có lỗi xảy ra. Vui lòng kiểm tra thông tin nhập.')
       console.error(e)
     } finally {
       setLoading(false)
@@ -38,177 +37,291 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen" style={{ background: '#fefaf0' }}>
+    <div className="min-h-screen flex flex-col">
 
-      {/* ── Header ── */}
-      <header className="border-b border-[#d4c4a8] bg-[#1c1410] text-[#f5deb3]">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-          <div>
-            <h1
-              className="text-[1.1rem] font-bold tracking-wide"
-              style={{ fontFamily: 'Playfair Display, Georgia, serif' }}
+      {/* ── Header ───────────────────────────────────── */}
+      <header style={{ background: 'var(--ink)', borderBottom: '3px solid var(--sienna)' }}>
+        <div className="max-w-7xl mx-auto px-5 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            {/* Decorative seal */}
+            <div
+              className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 text-lg"
+              style={{
+                background: 'radial-gradient(circle, #7a3c18, #3d1a08)',
+                border: '1.5px solid var(--gold-light)',
+                color: 'var(--gold-light)',
+                boxShadow: '0 0 12px rgba(180,130,40,0.2)',
+                fontFamily: 'var(--font-display)',
+              }}
             >
-              ✦ Tử Vi Đẩu Số
-            </h1>
-            <p className="text-[0.65rem] text-[#c8a87a] tracking-widest uppercase">
-              Lập lá số trực tuyến
-            </p>
+              紫
+            </div>
+            <div>
+              <h1
+                className="text-lg font-bold tracking-wide leading-tight"
+                style={{ fontFamily: 'var(--font-display)', color: 'var(--parchment)' }}
+              >
+                Tử Vi Đẩu Số
+              </h1>
+              <p className="text-[0.6rem] tracking-[0.2em] uppercase" style={{ color: 'var(--gold-light)', opacity: 0.8 }}>
+                Lập lá số trực tuyến
+              </p>
+            </div>
           </div>
-          <div className="text-[0.65rem] text-[#9a8070] hidden sm:block text-right">
-            Tính toán client-side<br />Không lưu dữ liệu
+
+          <div
+            className="hidden sm:flex items-center gap-1.5 text-[0.62rem] tracking-wider uppercase"
+            style={{ color: 'rgba(249,243,227,0.35)' }}
+          >
+            <span className="inline-block w-1 h-1 rounded-full" style={{ background: 'var(--gold-light)', opacity: 0.6 }} />
+            Tính toán tại trình duyệt
+            <span className="inline-block w-1 h-1 rounded-full" style={{ background: 'var(--gold-light)', opacity: 0.6 }} />
+            Không lưu dữ liệu
           </div>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-[340px_1fr] gap-8 items-start">
+      {/* ── Body ─────────────────────────────────────── */}
+      <div className="flex-1 max-w-7xl mx-auto w-full px-4 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-8 items-start">
 
-          {/* ── Sidebar: form ── */}
-          <aside className="no-print">
-            {/* Tiêu đề form */}
-            <div className="mb-5">
-              <div className="ornament-divider text-[0.65rem] mb-3">
-                <span className="text-[#8B4513] font-semibold tracking-widest uppercase">
-                  Nhập Thông Tin
-                </span>
+          {/* ── Sidebar ────────────────────────────────── */}
+          <aside className="no-print lg:sticky lg:top-6">
+            <div className="card p-5">
+              {/* Card header */}
+              <div className="mb-5">
+                <div className="flex items-center gap-2.5 mb-3">
+                  <div
+                    className="w-7 h-7 rounded flex items-center justify-center text-sm flex-shrink-0"
+                    style={{ background: 'var(--parchment-deep)', color: 'var(--sienna)', fontFamily: 'var(--font-display)' }}
+                  >
+                    命
+                  </div>
+                  <div>
+                    <div className="section-eyebrow">Nhập Thông Tin</div>
+                    <div className="text-[0.7rem] text-[var(--muted-light)] mt-0.5">Ngày tháng năm sinh dương lịch</div>
+                  </div>
+                </div>
+                <div className="h-px" style={{ background: 'var(--parchment-border)' }} />
               </div>
-              <p className="text-[0.72rem] text-[#7a6a58] leading-relaxed">
-                Nhập ngày tháng năm sinh dương lịch. Hệ thống sẽ tự động
-                chuyển sang âm lịch và lập đầy đủ lá số Tử Vi.
-              </p>
-            </div>
 
-            <div
-              className="bg-white rounded-xl shadow-sm border border-[#e8dcc8] p-5"
-            >
               <InputForm onSubmit={handleSubmit} loading={loading} />
             </div>
 
-            {/* Hướng dẫn đọc */}
-            <div className="mt-4 bg-[#fdf3d7] border border-[#e8c87a] rounded-lg p-3 text-[0.68rem] text-[#5a4a3a] space-y-1">
-              <p className="font-semibold text-[#8B4513]">Hướng dẫn màu sắc:</p>
-              <p><span className="font-bold text-[#1c1410]">Đen đậm</span> = Chính diệu</p>
-              <p><span className="font-bold text-[#c0392b]">Đỏ</span> = Sát tinh (Kình, Đà, Hỏa, Linh, Không, Kiếp…)</p>
-              <p><span className="font-bold text-[#27744a]">Xanh lá</span> = Cát tinh</p>
-              <p><span className="font-bold text-[#b8860b]">Vàng</span> = Hóa Lộc / Lộc Tồn</p>
-              <p><span className="font-bold text-[#1a4e8c]">Xanh đậm</span> = Hóa Kỵ</p>
-              <p><span className="font-bold text-[#8B4513]">Nâu</span> = Hóa Quyền</p>
-              <p><span className="font-bold text-[#2e7d6e]">Ngọc</span> = Hóa Khoa</p>
-              <p className="text-[#9a8070]">ĐV.Hóa X = Hóa theo bản mệnh · L.Hóa X = Hóa lưu niên</p>
-            </div>
+            {/* Legend */}
+            {result && (
+              <div
+                className="mt-4 rounded-lg p-4 text-[0.67rem] space-y-1.5"
+                style={{ background: 'var(--parchment-deep)', border: '1px solid var(--parchment-border)' }}
+              >
+                <p className="section-eyebrow mb-2">Chú giải màu sắc</p>
+                {[
+                  { color: 'var(--color-chinh)', label: 'Chính tinh', bold: true },
+                  { color: 'var(--color-sat)',   label: 'Sát tinh (Kình, Đà, Hỏa, Linh…)' },
+                  { color: 'var(--color-cat)',   label: 'Cát tinh' },
+                  { color: 'var(--color-loc)',   label: 'Hóa Lộc / Lộc Tồn' },
+                  { color: 'var(--color-ky)',    label: 'Hóa Kỵ' },
+                  { color: 'var(--color-quyen)', label: 'Hóa Quyền' },
+                  { color: 'var(--color-khoa)',  label: 'Hóa Khoa' },
+                ].map(item => (
+                  <div key={item.label} className="flex items-center gap-2">
+                    <span
+                      className="w-2 h-2 rounded-full flex-shrink-0"
+                      style={{ background: item.color }}
+                    />
+                    <span style={{ fontWeight: item.bold ? 700 : 400, color: 'var(--ink-light)' }}>{item.label}</span>
+                  </div>
+                ))}
+                <div className="pt-1" style={{ borderTop: '1px solid var(--parchment-border)' }}>
+                  <span className="text-[var(--muted-light)]">(M) Miếu · (V) Vượng · (Đ) Đắc · (H) Hãm</span>
+                </div>
+                <div className="text-[var(--muted-light)]">
+                  ĐV.Hóa = bản mệnh · L.Hóa = lưu niên
+                </div>
+              </div>
+            )}
           </aside>
 
-          {/* ── Main: chart ── */}
+          {/* ── Main content ───────────────────────────── */}
           <section id="laso-output">
+
+            {/* Empty state */}
             {!result && !error && (
-              <div className="flex flex-col items-center justify-center py-20 text-center">
+              <div className="flex flex-col items-center justify-center py-24 text-center">
                 <div
-                  className="text-6xl mb-4 opacity-20"
-                  style={{ fontFamily: 'Playfair Display, Georgia, serif' }}
+                  className="mb-5 select-none"
+                  style={{
+                    fontFamily: 'var(--font-display)',
+                    fontSize: '5rem',
+                    lineHeight: 1,
+                    background: 'linear-gradient(160deg, var(--parchment-border) 30%, var(--sienna) 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                  }}
                 >
                   ☯
                 </div>
-                <p className="text-[#9a8070] text-sm">
-                  Nhập thông tin bên trái để lập lá số
+                <p className="text-base font-semibold mb-1" style={{ color: 'var(--muted)', fontFamily: 'var(--font-serif)' }}>
+                  Nhập thông tin để lập lá số
                 </p>
-                <p className="text-[0.68rem] text-[#b8a888] mt-1">
+                <p className="text-sm" style={{ color: 'var(--muted-light)' }}>
                   Hỗ trợ lịch dương 1900–2100
                 </p>
               </div>
             )}
 
+            {/* Error */}
             {error && (
-              <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700 text-sm">
+              <div
+                className="rounded-lg p-4 text-sm"
+                style={{ background: '#fff5f5', border: '1px solid #f5c0b8', color: '#8a1c10' }}
+              >
                 <p className="font-semibold mb-1">⚠ Lỗi tính toán</p>
                 <p>{error}</p>
               </div>
             )}
 
+            {/* Result */}
             {result && (
               <div>
-                {/* Tiêu đề kết quả */}
-                <div className="ornament-divider text-[0.65rem] mb-4 no-print">
-                  <span className="text-[#8B4513] font-semibold tracking-widest uppercase">
-                    Lá Số — {result.hoTen}
-                  </span>
+                {/* Result header */}
+                <div className="no-print flex items-center justify-between mb-4">
+                  <div>
+                    <div className="section-eyebrow">Lá Số Tử Vi</div>
+                    <h2
+                      className="text-xl font-bold mt-0.5"
+                      style={{ color: 'var(--vermilion)', fontFamily: 'var(--font-display)' }}
+                    >
+                      {result.hoTen}
+                    </h2>
+                  </div>
+                  {/* Quick info pills */}
+                  <div className="flex flex-wrap gap-1.5 justify-end">
+                    {[
+                      result.amLich.tenNam,
+                      result.menh,
+                      result.cuc.ten,
+                    ].map(v => (
+                      <span
+                        key={v}
+                        className="text-[0.67rem] font-semibold px-2.5 py-1 rounded-full"
+                        style={{ background: 'var(--parchment-deep)', color: 'var(--sienna)', border: '1px solid var(--parchment-border)' }}
+                      >
+                        {v}
+                      </span>
+                    ))}
+                  </div>
                 </div>
 
                 <LasoChart result={result} />
 
-                {/* ── Bảng Đại Hạn chi tiết ── */}
+                {/* Đại hạn table */}
                 <div className="no-print mt-6">
-                  <div className="ornament-divider text-[0.65rem] mb-3">
-                    <span className="text-[#8B4513] font-semibold tracking-widest uppercase">
-                      Bảng Đại Hạn
-                    </span>
+                  <div className="flex items-center gap-3 mb-3">
+                    <div
+                      className="w-6 h-6 rounded flex items-center justify-center text-xs flex-shrink-0"
+                      style={{ background: 'var(--parchment-deep)', color: 'var(--sienna)', fontFamily: 'var(--font-display)' }}
+                    >
+                      限
+                    </div>
+                    <span className="section-eyebrow">Bảng Đại Hạn</span>
                   </div>
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-[0.72rem] border-collapse">
-                      <thead>
-                        <tr className="bg-[#1c1410] text-[#f5deb3]">
-                          <th className="px-3 py-2 text-left font-semibold">Cung</th>
-                          <th className="px-3 py-2 text-center font-semibold">Tuổi</th>
-                          <th className="px-3 py-2 text-left font-semibold">Chính tinh</th>
-                          <th className="px-3 py-2 text-left font-semibold">Tràng sinh</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {result.daiHans.map((dh, i) => {
-                          const cungData = result.cungs.find(c => c.chi === dh.chiCung)
-                          const chinhTinhs = cungData?.saos
-                            .filter(s => s.loai === 'chinh')
-                            .map(s => `${s.ten}(${s.mucDo ?? ''})`)
-                            .join(', ') ?? ''
-                          const isActive = result.tuoi >= dh.tuoi && result.tuoi <= dh.den
-                          return (
-                            <tr
-                              key={i}
-                              className={`border-b border-[#e8dcc8] ${isActive ? 'bg-[#fdf3d7] font-semibold' : i % 2 === 0 ? 'bg-white' : 'bg-[#fefaf5]'}`}
-                            >
-                              <td className="px-3 py-1.5">
-                                <span className="font-bold text-[#8B4513]">{dh.chiCung}</span>
-                                {' '}
-                                <span className="text-[#7a6a58] text-[0.65rem]">({cungData?.ten})</span>
-                                {isActive && <span className="ml-1 text-[0.6rem] bg-[#c0392b] text-white px-1 rounded">Hiện tại</span>}
-                              </td>
-                              <td className="px-3 py-1.5 text-center text-[#3d2b1f]">
-                                {dh.tuoi}–{dh.den}
-                              </td>
-                              <td className="px-3 py-1.5 text-[#1c1410]">{chinhTinhs}</td>
-                              <td className="px-3 py-1.5 text-[#7a6a58] italic">{cungData?.truongSinh}</td>
-                            </tr>
-                          )
-                        })}
-                      </tbody>
-                    </table>
+                  <div className="card overflow-hidden">
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-[0.72rem] border-collapse">
+                        <thead>
+                          <tr style={{ background: 'var(--ink)', color: 'var(--parchment)' }}>
+                            <th className="px-3 py-2.5 text-left font-semibold tracking-wide">Cung</th>
+                            <th className="px-3 py-2.5 text-center font-semibold tracking-wide">Tuổi</th>
+                            <th className="px-3 py-2.5 text-left font-semibold tracking-wide">Chính tinh</th>
+                            <th className="px-3 py-2.5 text-left font-semibold tracking-wide">Tràng sinh</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {result.daiHans.map((dh, i) => {
+                            const cungData = result.cungs.find(c => c.chi === dh.chiCung)
+                            const chinhTinhs = cungData?.saos
+                              .filter(s => s.loai === 'chinh')
+                              .map(s => s.ten)
+                              .join(', ') ?? ''
+                            const isActive = result.tuoi >= dh.tuoi && result.tuoi <= dh.den
+                            return (
+                              <tr
+                                key={i}
+                                style={{
+                                  background: isActive
+                                    ? 'rgba(181,53,26,0.06)'
+                                    : i % 2 === 0 ? 'white' : 'var(--parchment)',
+                                  borderBottom: '1px solid var(--parchment-border)',
+                                  fontWeight: isActive ? 600 : 400,
+                                }}
+                              >
+                                <td className="px-3 py-2">
+                                  <span className="font-bold" style={{ color: 'var(--sienna)' }}>{dh.chiCung}</span>
+                                  {' '}
+                                  <span className="text-[0.65rem]" style={{ color: 'var(--muted-light)' }}>
+                                    ({cungData?.ten})
+                                  </span>
+                                  {isActive && (
+                                    <span
+                                      className="ml-2 text-[0.58rem] font-bold px-1.5 py-0.5 rounded-full"
+                                      style={{ background: 'var(--vermilion)', color: 'white' }}
+                                    >
+                                      Hiện tại
+                                    </span>
+                                  )}
+                                </td>
+                                <td className="px-3 py-2 text-center" style={{ color: 'var(--ink-light)' }}>
+                                  {dh.tuoi}–{dh.den}
+                                </td>
+                                <td className="px-3 py-2" style={{ color: 'var(--ink)' }}>{chinhTinhs}</td>
+                                <td className="px-3 py-2 italic" style={{ color: 'var(--muted-light)' }}>{cungData?.truongSinh}</td>
+                              </tr>
+                            )
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
 
-                {/* ── Thông tin âm lịch ── */}
-                <div className="no-print mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+                {/* Thông tin âm lịch */}
+                <div className="no-print mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                   {[
                     { label: 'Năm', value: result.amLich.tenNam },
                     { label: 'Tháng', value: `${result.amLich.tenThang} (${result.amLich.thang}${result.amLich.nhuan ? ' nhuận' : ''})` },
                     { label: 'Ngày', value: `${result.amLich.tenNgay} (${result.amLich.ngay})` },
                     { label: 'Cục', value: result.cuc.ten },
                   ].map(item => (
-                    <div key={item.label} className="bg-white border border-[#e8dcc8] rounded-lg px-3 py-2">
-                      <div className="text-[0.6rem] text-[#9a8070] uppercase tracking-wider mb-0.5">{item.label}</div>
-                      <div className="text-[0.78rem] font-semibold text-[#3d2b1f]">{item.value}</div>
+                    <div
+                      key={item.label}
+                      className="card px-3 py-2.5 text-center"
+                      style={{ background: 'var(--parchment-deep)' }}
+                    >
+                      <div className="section-eyebrow mb-0.5">{item.label}</div>
+                      <div className="text-[0.8rem] font-semibold" style={{ color: 'var(--ink-light)' }}>{item.value}</div>
                     </div>
                   ))}
                 </div>
+
               </div>
             )}
           </section>
         </div>
-      </main>
+      </div>
 
-      {/* ── Footer ── */}
-      <footer className="no-print mt-12 border-t border-[#d4c4a8] py-4 text-center text-[0.65rem] text-[#9a8070]">
-        <p>Tử Vi Đẩu Số — Tính toán hoàn toàn tại trình duyệt, không lưu thông tin cá nhân.</p>
-        <p className="mt-1 opacity-60">Kết quả mang tính tham khảo, không thay thế tư vấn chuyên gia.</p>
+      {/* ── Footer ───────────────────────────────────── */}
+      <footer
+        className="no-print mt-auto py-5 text-center text-[0.62rem] tracking-wide"
+        style={{ borderTop: '1px solid var(--parchment-border)', color: 'var(--muted-light)' }}
+      >
+        <div className="max-w-7xl mx-auto px-4">
+          <p>Tử Vi Đẩu Số — Tính toán hoàn toàn tại trình duyệt, không lưu thông tin cá nhân.</p>
+          <p className="mt-1 opacity-60">Kết quả mang tính tham khảo.</p>
+        </div>
       </footer>
+
     </div>
   )
 }
