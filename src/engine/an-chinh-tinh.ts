@@ -114,8 +114,8 @@ const MIEN_VUONG: Record<string, Partial<Record<DiaChi, MucDo>>> = {
   },
   'Thái Dương': {
     'Dần':'M','Mão':'M','Thìn':'M','Tý':'V','Sửu':'V',
-    'Tỵ':'Đ','Ngọ':'Đ','Mùi':'Đ','Tuất':'Đ',
-    'Thân':'B','Dậu':'H','Hợi':'H'
+    'Tỵ':'Đ','Ngọ':'Đ','Mùi':'Đ',
+    'Thân':'B','Dậu':'H','Tuất':'H','Hợi':'H'
   },
   'Vũ Khúc': {
     'Thìn':'M','Tuất':'M','Sửu':'M','Mùi':'M',
